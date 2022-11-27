@@ -11,7 +11,7 @@ pipeline {
           agent {label 'slave'}
             steps {
                 script {
-                  if [ -d "$BUILD_DIR" ]; then
+                  if ( [ -d "$BUILD_DIR" ]) 
                     echo "$BUILD_DIR does exist."
                   else  {
                          /* "-------------GIT CLONE" */
