@@ -21,7 +21,8 @@ pipeline {
          agent {label 'slave'}
          steps{
           sh 'pwd && ls -lat'
-         } //stage list
+         } 
+       }//stage list
        
      }   //stages
 } // pipline
