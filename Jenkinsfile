@@ -20,7 +20,14 @@ pipeline {
         stage('list') { //----------------
           agent {label 'slave'}
           steps{
-            sh 'pwd && ls -lat'
+            //sh 'pwd && ls -lat'
+                /* "-------------GIT CLONE" */
+                         git credentialsId: 'key-slave', url: 'git@github.com:sroman200/nodejs.org.git'
+                         // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
+                         sh "ls -lart ./*" 
+                         // List all branches in your repo. 
+                         sh "git branch -a"
+            
           } 
        }//stage list
        
