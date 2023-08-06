@@ -58,7 +58,8 @@ pipeline {
                    ls -la build
                    
                    """
-          } 
-       }//stage list       
+             }
+          }   
+       }//stage build       
      }   //stages
 } // pipline
