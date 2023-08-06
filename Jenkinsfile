@@ -42,7 +42,7 @@ pipeline {
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
-            :sh 'npm -v'  //substitute with your code
+            sh 'npm -v'  //substitute with your code
           } 
        }//stage list       
      }   //stages
