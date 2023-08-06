@@ -11,6 +11,7 @@ pipeline {
         stage("Env Variables") {
             steps {
                 sh "printenv"
+                cleanWs()
             }
         }
     
