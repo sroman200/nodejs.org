@@ -11,9 +11,6 @@ pipeline {
         stage("Env Variables") {
             steps {
                 sh "printenv"
-                echo "${JENKINS_HOME}   root"
-                echo "${ITEM_ROOTDIR}   build"
-                echo "${ITEM_FULLNAME}   full_path"
             }
         }
     
