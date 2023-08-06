@@ -11,10 +11,12 @@ pipeline {
       //HOME_DIR  = "/home/centos/jenkins/"
     }
      stages {
+       
         stage("Env Variables") {
+           agent {label 'slave'}
             steps {
-                sh "printenv"
-                cleanWs()
+                sh 'printenv'
+                //cleanWs()
             }
         }
     
