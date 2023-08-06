@@ -1,6 +1,9 @@
 pipeline {
     agent none
-    
+    options {
+        // This is required if you want to clean before build
+        skipDefaultCheckout(true)
+    }
     environment {
       //CRED      = credentials('key-slave')
       BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
