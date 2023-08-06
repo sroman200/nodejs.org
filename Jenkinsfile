@@ -1,8 +1,12 @@
 pipeline {
     agent none
+    echo "${JENKINS_HOME}   root"
+    echo "${ITEM_ROOTDIR}   build"
+    echo "${ITEM_FULLNAME}   full_path"
     environment {
       //CRED      = credentials('key-slave')
-      BUILD_DIR = "/home/centos/jenkins/nodejs.org/build"
+      BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
+      
       //HOME_DIR  = "/home/centos/jenkins/"
     }
      stages {
@@ -20,7 +24,7 @@ pipeline {
         stage('list') { //----------------
           agent {label 'slave'}
           steps{
-            //sh 'pwd && ls -lat'
+            sh 'pwd && ls -lat'
                 /* "-------------GIT CLONE" */
             script {
                          git credentialsId: 'github', url: 'git@github.com:sroman200/nodejs.org.git'
