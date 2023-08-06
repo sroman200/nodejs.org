@@ -23,7 +23,7 @@ pipeline {
             //sh 'pwd && ls -lat'
                 /* "-------------GIT CLONE" */
             script {
-                         git credentialsId: 'key-git', url: 'git@github.com:sroman200/nodejs.org.git'
+                         git credentialsId: 'github', url: 'git@github.com:sroman200/nodejs.org.git'
                          // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
                          sh "ls -lart" 
                          // List all branches in your repo. 
