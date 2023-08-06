@@ -16,7 +16,8 @@ pipeline {
            agent {label 'slave'}
             steps {
                 sh 'printenv'
-                //cleanWs()
+                step([$class: 'WsCleanup'])
+                checkout scm
             }
         }
     
