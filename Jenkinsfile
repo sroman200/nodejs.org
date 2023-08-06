@@ -47,7 +47,7 @@ pipeline {
                    sh 'node -v'
                    
                    
-                   #build 'deploy-14' ## если нужно 
+                   // #build 'deploy-14' ## если нужно 
                    
                    
                    git branch: 'main', url: 'https://github.com/nodejs/nodejs.org.git'
