@@ -42,7 +42,7 @@ pipeline {
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
-                  nodejs(nodeJSInstallationName: 'nodejs14') {
+                  nodejs(nodeJSInstallationName: 'nodejs16') {
                    sh 'npm -v'  //substitute with your code
                    sh 'node -v'
                    
