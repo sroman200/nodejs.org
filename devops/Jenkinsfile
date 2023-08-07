@@ -40,7 +40,7 @@ pipeline {
 
         stage('Docker-Build') {
           agent {
-              label: slave
+              label 'slave'
                 // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
               //   dockerfile {
               //     filename 'Dockerfile_npm_builder'
@@ -54,7 +54,7 @@ pipeline {
 	            echo 'Docker Build Image Completed'
           }
           steps{
-              sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build' npm run build
+              sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build npm run build'
 	            echo 'NPM RUN BUILD'
           }
         }
