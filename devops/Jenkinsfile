@@ -7,11 +7,9 @@ pipeline {
     environment {
       //CRED      = credentials('key-slave')
       BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
-      
       //HOME_DIR  = "/home/centos/jenkins/"
     }
      stages {
-       
         stage("Env Variables") {
            agent {label 'slave'}
             steps {
@@ -20,46 +18,58 @@ pipeline {
                 checkout scm
             }
         }
-    
+
         stage('check directory BUILD') { //----------------
           agent {label 'slave'}
           when {
             expression {
               return fileExists("${BUILD_DIR}")
               }
-            } 
-          steps {
-             echo "${BUILD_DIR} exists" 
             }
-        } //stage check 
+          steps {
+             echo "${BUILD_DIR} exists"
+            }
+        } //stage check
         stage('list') { //----------------
           agent {label 'slave'}
           steps{
-            sh 'pwd && ls -lat'                
-          } 
+            sh 'pwd && ls -lat'
+            sh 'mkdir artifacts'
+          }
        }//stage list
-        
+
+        stage('Docker-Build') {
+          agent {
+                // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
+                dockerfile {
+                filename './docker/Dockerfile_npm_builder'
+                dir 'build'
+                label 'my-defined-label'
+                additionalBuildArgs  '--build-arg version=1.0.2'
+                args '-v /tmp:/app/nodejs/build'
+              }
+          }
+          steps{
+              sh 'ls /tmp'
+          }
+        }
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
                   nodejs(nodeJSInstallationName: 'nodejs14') {
                    sh 'npm -v'  //substitute with your code
                    sh 'node -v'
-                   
-                   
-                   // #build 'deploy-14' ## если нужно 
-                   
-                   
+
+                   // #build 'deploy-14' ## если нужно
+
                    //git branch: 'main', url: 'https://github.com/nodejs/nodejs.org.git'
-                   sh """ 
-                   
+                   sh """
                    cd $WORKSPACE && \
                    npm install && npm run build && \
                    ls -la build
-                   
                    """
              }
-          }   
-       }//stage build       
+          }
+       }//stage build
      }   //stages
 } // pipline
