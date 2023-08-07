@@ -53,6 +53,9 @@ pipeline {
               sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
 	            echo 'Docker Build Image Completed'
           }
+        }
+        stage('Docker-Run') {
+          agent { label 'slave' }
           steps{
               sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build npm run build'
 	            echo 'NPM RUN BUILD'
