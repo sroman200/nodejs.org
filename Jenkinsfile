@@ -42,7 +42,7 @@ pipeline {
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
-                  nodejs(nodeJSInstallationName: 'nodejs16') {
+                  nodejs(nodeJSInstallationName: 'nodejs14') {
                    sh 'npm -v'  //substitute with your code
                    sh 'node -v'
                    
@@ -50,7 +50,7 @@ pipeline {
                    // #build 'deploy-14' ## если нужно 
                    
                    
-                   git branch: 'main', url: 'https://github.com/nodejs/nodejs.org.git'
+                   //git branch: 'main', url: 'https://github.com/nodejs/nodejs.org.git'
                    sh """ 
                    
                    cd $WORKSPACE && \
