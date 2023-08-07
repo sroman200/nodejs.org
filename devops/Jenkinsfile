@@ -42,8 +42,8 @@ pipeline {
           agent {
                 // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
                 dockerfile {
-                  filename 'Dockerfile_npm_builder'
-                  dir 'docker'
+                  filename '.docker/Dockerfile_npm_builder'
+                  dir '.'
                   label 'npm-builder'
                   args '-v "${WORKSPACE}"/artifacts:/app/nodejs/build'
               }
