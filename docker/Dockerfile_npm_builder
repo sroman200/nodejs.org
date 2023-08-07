@@ -7,4 +7,4 @@ COPY . .
 
 RUN npm install
 
-ENTRYPOINT ["/bin/bash", "npm run build"]
+ENTRYPOINT ["npm", "run build"]
