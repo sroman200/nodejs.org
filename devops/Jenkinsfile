@@ -45,7 +45,7 @@ pipeline {
                   filename 'Dockerfile_npm_builder'
                   dir 'docker'
                   label 'npm-builder'
-                  args '-v /tmp:/app/nodejs/build'
+                  args '-v "${WORKSPACE}"/artifacts:/app/nodejs/build'
               }
           }
           steps{
