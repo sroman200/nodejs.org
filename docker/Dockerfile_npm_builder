@@ -1,11 +1,8 @@
 FROM node:14.21.3-alpine3.17 as builder
 
-RUN ls ../
 
 WORKDIR /app
 
-RUN ls
-
-COPY . .
+COPY ./ .
 
 RUN npm install
