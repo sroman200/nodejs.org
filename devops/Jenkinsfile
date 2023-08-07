@@ -44,7 +44,7 @@ pipeline {
                 dockerfile {
                 filename './docker/Dockerfile_npm_builder'
                 dir 'build'
-                label 'my-defined-label'
+                label 'npm-builder'
                 additionalBuildArgs  '--build-arg version=1.0.2'
                 args '-v /tmp:/app/nodejs/build'
               }
