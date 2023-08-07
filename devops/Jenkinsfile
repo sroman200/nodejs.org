@@ -57,7 +57,7 @@ pipeline {
         stage('Docker-Run') {
           agent { label 'slave' }
           steps{
-              sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build \ npm run build'
+              sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build\ npm run build'
 	            echo 'NPM RUN BUILD'
           }
         }
