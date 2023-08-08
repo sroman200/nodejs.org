@@ -55,14 +55,14 @@ pipeline {
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
-                   sh 'ls -la artifacts'
+              sh 'ls -la artifacts'
           }
        }
-     }   //stages
-      post {
-        agent {label 'slave'}
-        always {
-            archiveArtifacts 'artifacts/*.tar.gz'
+        stage('Publish Artifacts') {
+        agent { label 'slave' }
+        steps {
+              archiveArtifacts 'artifacts/*.tar.gz'
         }
-    }
+       }
+     }   //stages
 } // pipline
