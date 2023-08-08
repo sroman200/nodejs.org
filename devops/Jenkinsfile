@@ -31,7 +31,7 @@ pipeline {
             }
         } //stage check
         stage('list') { //----------------
-          agent {label 'slave'}
+          agent { label 'slave' }
           steps{
             sh 'pwd && ls -lat'
             sh 'mkdir artifacts'
@@ -39,16 +39,7 @@ pipeline {
        }//stage list
 
         stage('Docker-Build') {
-          agent {
-              label 'slave'
-                // Equivalent to "docker build -f Dockerfile.build --build-arg version=1.0.2 ./build/
-              //   dockerfile {
-              //     filename 'Dockerfile_npm_builder'
-              //     dir 'docker'
-              //     label 'npm-builder'
-              //     args '-v "${WORKSPACE}"/artifacts:/app/nodejs/build'
-              // }
-          }
+          agent { label 'slave' }
           steps{
               sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
 	            echo 'Docker Build Image Completed'
@@ -59,25 +50,28 @@ pipeline {
           steps{
               sh 'sudo docker run --rm  npm-builder:last -v "${WORKSPACE}"/artifacts:/app/nodejs/build'
 	            echo 'NPM RUN BUILD'
+              echo '${WORKSPACE}'
+              ls "${WORKSPACE}"/artifacts
           }
         }
         stage('Build') { //----------------
           agent {label 'slave'}
           steps{
-                  nodejs(nodeJSInstallationName: 'nodejs14') {
-                   sh 'npm -v'  //substitute with your code
-                   sh 'node -v'
+                  //nodejs(nodeJSInstallationName: 'nodejs14') {
+                  // sh 'npm -v'  //substitute with your code
+                  // sh 'node -v'
 
                    // #build 'deploy-14' ## если нужно
 
                    //git branch: 'main', url: 'https://github.com/nodejs/nodejs.org.git'
-                   sh """
-                   cd $WORKSPACE && \
-                   npm install && npm run build && \
-                   ls -la build
-                   """
-             }
+                   //sh """
+                   //cd $WORKSPACE && \
+                   //npm install && npm run build && \
+                   //ls -la build
+                   ls -la artifacts
+                   //"""
+             //}
           }
-       }//stage build
+       }
      }   //stages
 } // pipline
