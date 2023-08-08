@@ -60,6 +60,7 @@ pipeline {
        }
      }   //stages
       post {
+        agent {label 'slave'}
         always {
             archiveArtifacts 'artifacts/*.tar.gz'
         }
