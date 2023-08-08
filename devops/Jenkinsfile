@@ -61,7 +61,7 @@ pipeline {
         stage('Publish Artifacts') {
         agent { label 'slave' }
         steps {
-              archiveArtifacts '/*.tar.gz'
+              archiveArtifacts '*.tar.gz'
         }
        }
      }   //stages
