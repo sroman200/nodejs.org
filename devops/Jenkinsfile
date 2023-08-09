@@ -52,17 +52,22 @@ pipeline {
               sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
           }
         }
-        stage('Build') { //----------------
+        stage('List DIR artifacts') { //----------------
           agent {label 'slave'}
           steps{
               sh 'ls -la artifacts'
           }
+          post {
+              success {
+                      archiveArtifacts '*.tar.gz'
+              }
+          }
        }
-        stage('Publish Artifacts') {
-        agent { label 'slave' }
-        steps {
-              archiveArtifacts '*.tar.gz'
-        }
-       }
+        //stage('Publish Artifacts') {
+        //agent { label 'slave' }
+        //steps {
+          //    archiveArtifacts '*.tar.gz'
+        //}
+       //}
      }   //stages
 } // pipline
