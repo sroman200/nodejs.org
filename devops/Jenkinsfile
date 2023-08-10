@@ -6,17 +6,17 @@ pipeline {
     }
     environment {
       //CRED      = credentials('key-slave')
-      BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
+      //BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
       //HOME_DIR  = "/home/centos/jenkins/"
     }
      stages {
         stage('check directory BUILD') { //----------------
           agent {label 'slave'}
-          when {
-            expression {
-              return fileExists("${BUILD_DIR}")
-              }
-            }
+          //when {
+          //  expression {
+          //    return fileExists("${BUILD_DIR}")
+          //    }
+          //  }
           steps {
               step([$class: 'WsCleanup'])
               checkout scm
