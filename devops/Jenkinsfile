@@ -52,7 +52,7 @@ pipeline {
               sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
           }
         }
-        stage('List DIR artifacts') { //----------------
+        stage('List DIR artifacts') {
           agent {label 'slave'}
           steps{
               sh 'ls -la artifacts'
@@ -63,12 +63,17 @@ pipeline {
               }
           }
        }
-        //stage('Publish Artifacts') {
-        //agent { label 'slave' }
-        //steps {
-          //    archiveArtifacts '*.tar.gz'
-        //}
-       //}
+        stage('Deploy Artifacts') {
+        agent { label 'slave' }
+        steps {
+              sh """
+              ls /usr/share/nodejs/
+              mkdir -p /usr/share/nodejs/releases/env.BUILD_NUMBER
+              tar xzf *.tar.gz -C /usr/share/nodejs/releases/env.BUILD_NUMBER/
+                ln -sfT /usr/share/nodejs/releases/env.BUILD_NUMBER /usr/share/nodejs/current
+              """
+        }
+       }
      }   //stages
     post {
         //always {
