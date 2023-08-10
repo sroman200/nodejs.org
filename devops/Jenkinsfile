@@ -10,15 +10,6 @@ pipeline {
       //HOME_DIR  = "/home/centos/jenkins/"
     }
      stages {
-        stage("Env Variables") {
-           agent {label 'slave'}
-            steps {
-                sh 'printenv'
-                step([$class: 'WsCleanup'])
-                checkout scm
-            }
-        }
-
         stage('check directory BUILD') { //----------------
           agent {label 'slave'}
           when {
@@ -27,20 +18,20 @@ pipeline {
               }
             }
           steps {
-             echo "${BUILD_DIR} exists"
+              step([$class: 'WsCleanup'])
+              checkout scm
             }
-        } //stage check
-        stage('list') { //----------------
+        }
+        stage('list') {
           agent { label 'slave' }
           steps{
             sh 'pwd && ls -lat'
-            sh 'mkdir artifacts'
           }
-       }//stage list
-
+       }
         stage('Docker-Build') {
           agent { label 'slave' }
           steps{
+              sh 'mkdir artifacts'
               sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
 	            echo 'Docker Build Image Completed'
           }
@@ -50,6 +41,7 @@ pipeline {
           steps{
               sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
               sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
+              //sh 'ls -la artifacts'
           }
         }
         stage('List DIR artifacts') {
