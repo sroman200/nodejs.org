@@ -1,41 +1,40 @@
 pipeline {
-    agent none
-    options {
+  agent none
+  options {
         // This is required if you want to clean before build
-        skipDefaultCheckout(true)
+      skipDefaultCheckout(true)
     }
-     stages {
-        stage('Cleanup directory BUILD') { //----------------
-          agent {label 'slave'}
-          steps {
-              step([$class: 'WsCleanup'])
-              checkout scm
-            }
+  stages {
+    stage('Cleanup directory BUILD') {
+      agent {label 'slave'}
+      steps {
+            step([$class: 'WsCleanup'])
+                 checkout scm
+      }
+    }
+    stage('Docker-Build') {
+      agent { label 'slave' }
+      steps{
+            sh 'mkdir artifacts'
+            sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
+	          echo 'Docker Build Image Completed'
+      }
+    }
+    stage('Docker-Run-Publish-Artifacts') {
+      agent { label 'slave' }
+      steps{
+            sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
+            sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
+            sh 'ls -la artifacts'
+      }
+      post {
+        success {
+                archiveArtifacts '*.tar.gz'
         }
-        stage('Docker-Build') {
-          agent { label 'slave' }
-          steps{
-              sh 'mkdir artifacts'
-              sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
-	            echo 'Docker Build Image Completed'
-          }
-        }
-        stage('Docker-Run-Publish-Artifacts') {
-          agent { label 'slave' }
-          steps{
-              sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
-              sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
-              sh 'ls -la artifacts'
-            }
-          post {
-              success {
-                      archiveArtifacts '*.tar.gz'
-                }
-            }
-          }
-        }
-        stage('Deploy Artifacts') {
-        agent { label 'slave' }
+      }
+    }
+    stage('Deploy Artifacts') {
+      agent { label 'slave' }
         steps {
               sh """
               mkdir -p /usr/share/nodejs/releases/webpage-${BUILD_ID}
@@ -43,14 +42,14 @@ pipeline {
               ln -sfT /usr/share/nodejs/releases/webpage-${BUILD_ID} /usr/share/nodejs/current
               """
         }
-       }
-     }   //stages
-    post {
-        success {
+      }
+    }   //stages
+  post {
+    success {
             echo "SUCCESSFULLY FINISHED"
-        }
-        failure {
-            echo "Pipeline FAILED"
-        }
     }
+    failure {
+            echo "Pipeline FAILED"
+    }
+  }
 } // pipline
