@@ -68,9 +68,9 @@ pipeline {
         steps {
               sh """
               ls /usr/share/nodejs/
-              mkdir -p /usr/share/nodejs/releases/env.BUILD_NUMBER
-              tar xzf *.tar.gz -C /usr/share/nodejs/releases/env.BUILD_NUMBER/
-                ln -sfT /usr/share/nodejs/releases/env.BUILD_NUMBER /usr/share/nodejs/current
+              mkdir -p /usr/share/nodejs/releases/webpage-${BUILD_ID}
+              tar xzf *.tar.gz -C /usr/share/nodejs/releases/webpage-${BUILD_ID}/
+                ln -sfT /usr/share/nodejs/releases/webpage-${BUILD_ID} /usr/share/nodejs/current
               """
         }
        }
