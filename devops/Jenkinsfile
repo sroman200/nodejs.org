@@ -5,24 +5,13 @@ pipeline {
         skipDefaultCheckout(true)
     }
      stages {
-        stage('check directory BUILD') { //----------------
+        stage('Cleanup directory BUILD') { //----------------
           agent {label 'slave'}
-          //when {
-          //  expression {
-          //    return fileExists("${BUILD_DIR}")
-          //    }
-          //  }
           steps {
               step([$class: 'WsCleanup'])
               checkout scm
             }
         }
-        stage('list') {
-          agent { label 'slave' }
-          steps{
-            sh 'pwd && ls -lat'
-          }
-       }
         stage('Docker-Build') {
           agent { label 'slave' }
           steps{
@@ -31,25 +20,19 @@ pipeline {
 	            echo 'Docker Build Image Completed'
           }
         }
-        stage('Docker-Run') {
+        stage('Docker-Run-Publish-Artifacts') {
           agent { label 'slave' }
           steps{
               sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
               sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
-              //sh 'ls -la artifacts'
-          }
-        }
-        stage('List DIR artifacts') {
-          agent {label 'slave'}
-          steps{
               sh 'ls -la artifacts'
-          }
           post {
               success {
                       archiveArtifacts '*.tar.gz'
-              }
+                }
+            }
           }
-       }
+        }
         stage('Deploy Artifacts') {
         agent { label 'slave' }
         steps {
@@ -62,17 +45,11 @@ pipeline {
        }
      }   //stages
     post {
-        //always {
-        //    error "I AM FAILING NOW"
-       // }
         success {
-            echo "MOST DEFINITELY FINISHED"
+            echo "SUCCESSFULLY FINISHED"
         }
         failure {
-            echo "I FAILED"
-        }
-        cleanup {
-            echo "I RAN ANYWAY"
+            echo "Pipeline FAILED"
         }
     }
 } // pipline
