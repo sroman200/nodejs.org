@@ -26,6 +26,7 @@ pipeline {
               sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
               sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
               sh 'ls -la artifacts'
+            }
           post {
               success {
                       archiveArtifacts '*.tar.gz'
