@@ -4,11 +4,6 @@ pipeline {
         // This is required if you want to clean before build
         skipDefaultCheckout(true)
     }
-    environment {
-      //CRED      = credentials('key-slave')
-      //BUILD_DIR = "{JENKINS_HOME}/workspace/nodejs/build"
-      //HOME_DIR  = "/home/centos/jenkins/"
-    }
      stages {
         stage('check directory BUILD') { //----------------
           agent {label 'slave'}
