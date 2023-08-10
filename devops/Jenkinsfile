@@ -71,9 +71,9 @@ pipeline {
        //}
      }   //stages
     post {
-        always {
-            error "I AM FAILING NOW"
-        }
+        //always {
+        //    error "I AM FAILING NOW"
+       // }
         success {
             echo "MOST DEFINITELY FINISHED"
         }
