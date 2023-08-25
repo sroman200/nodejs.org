@@ -16,14 +16,14 @@ pipeline {
       agent { label 'slave' }
       steps{
             sh 'mkdir artifacts'
-            sh 'sudo docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
+            sh 'docker build -t npm-builder:last -f docker/Dockerfile_npm_builder .'
 	          echo 'Docker Build Image Completed'
       }
     }
     stage('Docker-Run-Publish-Artifacts') {
       agent { label 'slave' }
       steps{
-            sh 'sudo docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
+            sh 'docker run --rm -v $(pwd)/artifacts:/app/build  npm-builder:last npm run build'
             sh 'tar -czf webpage-"${BUILD_ID}".tar.gz -C $(pwd)/artifacts .'
             sh 'ls -la artifacts'
       }
